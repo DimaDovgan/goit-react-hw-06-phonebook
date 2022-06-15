@@ -1,11 +1,12 @@
 import { useState,useEffect} from "react"
 import styles from "./style-phonebook.module.css"
-import PropTypes from "prop-types";
-import {connect} from 'react-redux'
-import { items } from "../redux/store";
+import { items } from "../redux/Acions/Actions";
 import { nanoid } from 'nanoid'
+import { useDispatch } from "react-redux";
 
-const Form = ({onSubmit}) => {
+export const Form = () => {
+    const dispatch = useDispatch();
+
     const [name, setName] = useState("");
     const [number, setNumber] = useState("");
 
@@ -25,7 +26,7 @@ const Form = ({onSubmit}) => {
 
     const addPerson = (event) => {
         event.preventDefault();
-        onSubmit({name,number});
+        dispatch(items({name,number,id:nanoid()}))
         formReset();
         
     }
@@ -58,16 +59,3 @@ const Form = ({onSubmit}) => {
         <button type="submit" className={styles.button} >add</button>
         </form>
     }
-
-Form.propTypes = {
-    onSubmit: PropTypes.func.isRequired,
-}
-
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        onSubmit:(person)=>dispatch(items({person,id:nanoid()}))
-    }
-}
-
-export default connect(null,mapDispatchToProps)(Form)

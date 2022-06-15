@@ -1,34 +1,16 @@
 import styles from "./style-phonebook.module.css"
-import PropTypes from "prop-types";
-import { connect } from 'react-redux'
-import { items, filter,deleteContact } from '../redux/store'
- const Filter = ({ filter,hendelChangeInputFilter }) => {
-    
+import {filter} from '../redux/Acions/Actions'
+import { useSelector,useDispatch } from "react-redux";
+export const Filter = () => {
+    const filterValue = useSelector(state => state.rootReduser.contacts.filter);
+    const dispatch = useDispatch();
     return <div><input
         className={styles.input}
         type="text"
         name="filter"
-        value={filter}
+        value={filterValue}
         required
-        onChange={hendelChangeInputFilter}
+        onChange={(event) => dispatch(filter(event.currentTarget.value))}
     />
     </div>
 }
-Filter.propTypes = {
-    hendelChangeInputFilter: PropTypes.func.isRequired,
-    filter:PropTypes.string.isRequired,
-    
-}
-
-const mapStateToProps = (state) => {
-    return {
-        filter: state.rootReduser.contacts.filter,
-    }
-}
-const mapDispatchToProps = (dispatch) => {
-    return {
-        hendelChangeInputFilter: (event) => dispatch(filter(event.currentTarget.value)),
-    }
-}
-
-export default connect(mapStateToProps,mapDispatchToProps)(Filter)
